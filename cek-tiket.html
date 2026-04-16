@@ -605,7 +605,7 @@
   }
 
   async function ambilDariGitHub(kode) {
-    if (GITHUB_TOKEN === 'YOUR_GITHUB_TOKEN_HERE') return null;
+    if (GITHUB_TOKEN === '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') return null;
 
     const res = await fetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues?state=all&per_page=100`,

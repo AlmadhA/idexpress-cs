@@ -1235,7 +1235,7 @@
       localStorage.setItem('ide_tickets', JSON.stringify(tickets));
 
       // Coba kirim ke GitHub jika terkonfigurasi
-      if (GITHUB_TOKEN !== 'YOUR_GITHUB_TOKEN_HERE' && tiket.githubIssue) {
+      if (GITHUB_TOKEN !== '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' && tiket.githubIssue) {
         try {
           await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues/${tiket.githubIssue}/comments`, {
             method: 'POST',
