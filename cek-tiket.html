@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cek E-Ticket — ID Express CS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C8231B;
+    --red-dark: #9E1A14;
+    --red-light: #E8342B;
+    --red-bg: #FFF5F5;
+    --red-border: #FFCCC9;
+    --white: #FFFFFF;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-400: #9CA3AF;
+    --gray-600: #4B5563;
+    --gray-800: #1F2937;
+    --font: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--gray-50);
+    min-height: 100vh;
+    color: var(--gray-800);
+  }
+
+  nav {
+    background: var(--red);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    box-shadow: 0 2px 12px rgba(200,35,27,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .nav-logo-icon {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: var(--red);
+    font-size: 16px;
+    letter-spacing: -1px;
+  }
+
+  .nav-logo-text {
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.2;
+  }
+
+  .nav-logo-sub {
+    color: rgba(255,255,255,0.75);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    background: rgba(255,255,255,0.15);
+    color: white;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+    color: white;
+    padding: 40px 24px 72px;
+    text-align: center;
+  }
+
+  .hero h1 { font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+  .hero p { font-size: 14px; opacity: 0.85; }
+
+  .main {
+    max-width: 680px;
+    margin: -32px auto 60px;
+    padding: 0 16px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(200,35,27,0.12);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .card-header {
+    padding: 22px 28px 18px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .card-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .card-header p {
+    font-size: 13px;
+    color: var(--gray-400);
+  }
+
+  .card-body { padding: 24px 28px; }
+
+  /* SEARCH */
+  .search-box {
+    display: flex;
+    gap: 10px;
+  }
+
+  .search-input {
+    flex: 1;
+    font-family: var(--font);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 13px 16px;
+    border: 2px solid var(--gray-200);
+    border-radius: 12px;
+    outline: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    color: var(--red);
+  }
+
+  .search-input:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(200,35,27,0.10);
+  }
+
+  .search-input::placeholder {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: var(--gray-400);
+    font-size: 14px;
+  }
+
+  .btn-search {
+    padding: 13px 22px;
+    background: var(--red);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-search:hover {
+    background: var(--red-dark);
+    box-shadow: 0 4px 16px rgba(200,35,27,0.3);
+  }
+
+  /* STATUS BADGE */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+
+  .status-baru      { background: #DBEAFE; color: #1E40AF; }
+  .status-proses    { background: #FEF3C7; color: #92400E; }
+  .status-selesai   { background: #D1FAE5; color: #065F46; }
+  .status-ditutup   { background: var(--gray-100); color: var(--gray-600); }
+
+  /* TICKET DETAIL */
+  .ticket-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .ticket-code-small {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray-400);
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+    font-family: 'Courier New', monospace;
+  }
+
+  .ticket-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--gray-800);
+  }
+
+  .ticket-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--gray-400);
+  }
+
+  .meta-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-800);
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--gray-100);
+    margin: 20px 0;
+  }
+
+  /* CHAT */
+  .chat-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray-400);
+    margin-bottom: 16px;
+  }
+
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .chat-bubble-wrap {
+    display: flex;
+    flex-direction: column;
+    max-width: 85%;
+  }
+
+  .chat-bubble-wrap.customer { align-self: flex-end; align-items: flex-end; }
+  .chat-bubble-wrap.admin    { align-self: flex-start; align-items: flex-start; }
+
+  .chat-who {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gray-400);
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  .chat-bubble-wrap.customer .chat-who { color: var(--red); }
+
+  .chat-bubble {
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .chat-bubble.customer-bubble {
+    background: var(--red);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+
+  .chat-bubble.admin-bubble {
+    background: var(--gray-100);
+    color: var(--gray-800);
+    border-bottom-left-radius: 4px;
+  }
+
+  .chat-time {
+    font-size: 10px;
+    color: var(--gray-400);
+    margin-top: 4px;
+  }
+
+  /* EMPTY & ERROR */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--gray-400);
+  }
+
+  .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state h3 { font-size: 16px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px; }
+  .empty-state p { font-size: 13px; line-height: 1.6; }
+
+  .error-state {
+    background: #FFF5F5;
+    border: 1px solid var(--red-border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    color: var(--red);
+    font-size: 13px;
+  }
+
+  /* TIMELINE STATUS */
+  .timeline {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    background: var(--gray-50);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .tl-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+  }
+
+  .tl-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--gray-200);
+  }
+
+  .tl-step.done:not(:last-child)::after { background: var(--red); }
+
+  .tl-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tl-step.done .tl-dot { background: var(--red); color: white; }
+  .tl-step.current .tl-dot {
+    background: var(--red);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(200,35,27,0.15);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(200,35,27,0.15); }
+    50% { box-shadow: 0 0 0 8px rgba(200,35,27,0.08); }
+  }
+
+  .tl-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--gray-400);
+    text-align: center;
+  }
+
+  .tl-step.done .tl-label, .tl-step.current .tl-label { color: var(--red); }
+
+  footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--gray-400);
+  }
+
+  footer a { color: var(--red); text-decoration: none; }
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 480px) {
+    .search-box { flex-direction: column; }
+    .card-header, .card-body { padding: 18px 18px; }
+    .ticket-meta { gap: 10px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">iD</div>
+    <div>
+      <div class="nav-logo-text">ID EXPRESS</div>
+      <div class="nav-logo-sub">Customer Service</div>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Buat Komplain</a>
+    <a href="cek-tiket.html" class="active">Cek E-Ticket</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>🔍 Cek Status E-Ticket</h1>
+  <p>Masukkan kode E-Ticket untuk melihat status dan balasan dari tim kami</p>
+</div>
+
+<div class="main">
+
+  <!-- SEARCH CARD -->
+  <div class="card">
+    <div class="card-header">
+      <h2>Masukkan Kode E-Ticket</h2>
+      <p>Kode terdiri dari format IDE-TAHUN-KODE (contoh: IDE-2024-A7X9K)</p>
+    </div>
+    <div class="card-body">
+      <div class="search-box">
+        <input
+          type="text"
+          class="search-input"
+          id="input-kode"
+          placeholder="Contoh: IDE-2024-A7X9K"
+          maxlength="15"
+          onkeypress="if(event.key==='Enter') cekTiket()"
+        >
+        <button class="btn-search" onclick="cekTiket()">
+          <span id="search-btn-text">Cek Tiket</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT AREA -->
+  <div id="result-area"></div>
+
+</div>
+
+<footer>
+  &copy; 2024 ID Express · <a href="index.html">Buat Komplain</a> · <a href="cek-tiket.html">Cek E-Ticket</a>
+</footer>
+
+<script>
+  const GITHUB_TOKEN = 'YOUR_GITHUB_TOKEN_HERE';
+  const GITHUB_OWNER = 'YOUR_GITHUB_USERNAME';
+  const GITHUB_REPO  = 'idexpress-cs-tickets';
+
+  // Auto-isi dari URL param jika ada
+  window.onload = () => {
+    const params = new URLSearchParams(window.location.search);
+    const kode = params.get('kode');
+    if (kode) {
+      document.getElementById('input-kode').value = kode;
+      cekTiket();
+    }
+  };
+
+  function formatTanggal(iso) {
+    return new Intl.DateTimeFormat('id-ID', {
+      day: 'numeric', month: 'long', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    }).format(new Date(iso));
+  }
+
+  function getStatusClass(status) {
+    const map = {
+      'Baru': 'status-baru',
+      'Diproses': 'status-proses',
+      'Selesai': 'status-selesai',
+      'Ditutup': 'status-ditutup'
+    };
+    return map[status] || 'status-baru';
+  }
+
+  function getStatusIcon(status) {
+    const map = {
+      'Baru': '🔵',
+      'Diproses': '🟡',
+      'Selesai': '🟢',
+      'Ditutup': '⚫'
+    };
+    return map[status] || '🔵';
+  }
+
+  function getTimelineSteps(status) {
+    const steps = ['Baru', 'Diproses', 'Selesai'];
+    const idx = steps.indexOf(status);
+    return steps.map((s, i) => ({
+      label: s,
+      state: i < idx ? 'done' : i === idx ? 'current' : ''
+    }));
+  }
+
+  async function cekTiket() {
+    const kode = document.getElementById('input-kode').value.trim().toUpperCase();
+    if (!kode) { alert('Masukkan kode E-Ticket terlebih dahulu.'); return; }
+
+    const btnText = document.getElementById('search-btn-text');
+    btnText.innerHTML = '<div class="spinner"></div>';
+
+    const result = document.getElementById('result-area');
+    result.innerHTML = '';
+
+    // Coba dari localStorage dulu
+    const tickets = JSON.parse(localStorage.getItem('ide_tickets') || '{}');
+
+    setTimeout(async () => {
+      btnText.textContent = 'Cek Tiket';
+
+      if (tickets[kode]) {
+        const tiket = tickets[kode];
+        tampilkanTiket(tiket);
+      } else {
+        // Coba dari GitHub Issues
+        try {
+          const data = await ambilDariGitHub(kode);
+          if (data) {
+            tampilkanTiket(data);
+          } else {
+            result.innerHTML = `
+              <div class="card">
+                <div class="card-body">
+                  <div class="empty-state">
+                    <div class="icon">🔍</div>
+                    <h3>Tiket Tidak Ditemukan</h3>
+                    <p>Kode <strong>${kode}</strong> tidak ditemukan dalam sistem kami.<br>
+                    Pastikan kode yang dimasukkan sudah benar.</p>
+                  </div>
+                </div>
+              </div>`;
+          }
+        } catch(e) {
+          result.innerHTML = `
+            <div class="card">
+              <div class="card-body">
+                <div class="empty-state">
+                  <div class="icon">🔍</div>
+                  <h3>Tiket Tidak Ditemukan</h3>
+                  <p>Kode <strong>${kode}</strong> tidak ditemukan.<br>Pastikan kode sudah benar.</p>
+                </div>
+              </div>
+            </div>`;
+        }
+      }
+    }, 600);
+  }
+
+  async function ambilDariGitHub(kode) {
+    if (GITHUB_TOKEN === 'YOUR_GITHUB_TOKEN_HERE') return null;
+
+    const res = await fetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues?state=all&per_page=100`,
+      { headers: { 'Authorization': `token ${GITHUB_TOKEN}` } }
+    );
+
+    if (!res.ok) return null;
+    const issues = await res.json();
+    const issue = issues.find(i => i.title.includes(kode));
+    if (!issue) return null;
+
+    // Ambil comments
+    const commRes = await fetch(issue.comments_url, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+    });
+    const comments = commRes.ok ? await commRes.json() : [];
+
+    const label = (issue.labels || []).map(l => l.name);
+    let status = 'Baru';
+    if (label.includes('Selesai')) status = 'Selesai';
+    else if (label.includes('Diproses')) status = 'Diproses';
+
+    const balasan = comments.map(c => ({
+      dari: 'Admin ID Express',
+      pesan: c.body,
+      tanggal: c.created_at
+    }));
+
+    // Parse body
+    const body = issue.body || '';
+    const kategoriMatch = body.match(/\*\*Kategori:\*\* (.+)/);
+    const resiMatch = body.match(/\*\*Nomor Resi:\*\* (.+)/);
+    const namaMatch = body.match(/\*\*Nama:\*\* (.+)/);
+    const deskMatch = body.split('### Deskripsi Masalah:')[1]?.split('---')[0]?.trim();
+
+    return {
+      code: kode,
+      resi: resiMatch ? resiMatch[1].trim() : '-',
+      nama: namaMatch ? namaMatch[1].trim() : '-',
+      kategori: kategoriMatch ? kategoriMatch[1].trim() : '-',
+      deskripsi: deskMatch || '-',
+      status,
+      tanggal: issue.created_at,
+      balasan
+    };
+  }
+
+  function tampilkanTiket(tiket) {
+    const result = document.getElementById('result-area');
+    const tl = getTimelineSteps(tiket.status);
+    const statusClass = getStatusClass(tiket.status);
+    const statusIcon = getStatusIcon(tiket.status);
+
+    // Buat chat bubbles
+    let chatHTML = `
+      <div class="chat-bubble-wrap customer">
+        <div class="chat-who">Anda (Komplain Awal)</div>
+        <div class="chat-bubble customer-bubble">${escapeHTML(tiket.deskripsi)}</div>
+        <div class="chat-time">${formatTanggal(tiket.tanggal)}</div>
+      </div>`;
+
+    if (tiket.balasan && tiket.balasan.length > 0) {
+      tiket.balasan.forEach(b => {
+        chatHTML += `
+          <div class="chat-bubble-wrap admin">
+            <div class="chat-who">👤 ${escapeHTML(b.dari || 'Admin ID Express')}</div>
+            <div class="chat-bubble admin-bubble">${escapeHTML(b.pesan)}</div>
+            <div class="chat-time">${formatTanggal(b.tanggal)}</div>
+          </div>`;
+      });
+    } else {
+      chatHTML += `
+        <div style="text-align:center;padding:20px;color:var(--gray-400);font-size:13px;">
+          ⏳ Menunggu balasan dari tim ID Express...
+        </div>`;
+    }
+
+    // Timeline
+    const tlHTML = tl.map(s => `
+      <div class="tl-step ${s.state}">
+        <div class="tl-dot">${s.state === 'done' ? '✓' : s.state === 'current' ? '●' : ''}</div>
+        <div class="tl-label">${s.label}</div>
+      </div>`).join('');
+
+    result.innerHTML = `
+      <div class="card">
+        <div class="card-header">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--gray-400);letter-spacing:1px;font-family:'Courier New',monospace;margin-bottom:4px;">${escapeHTML(tiket.code)}</div>
+              <div style="font-size:16px;font-weight:800;color:var(--gray-800);">Tiket: ${escapeHTML(tiket.kategori)}</div>
+            </div>
+            <span class="status-badge ${statusClass}">${statusIcon} ${escapeHTML(tiket.status)}</span>
+          </div>
+        </div>
+        <div class="card-body">
+
+          <!-- Timeline -->
+          <div class="timeline">
+            ${tlHTML}
+          </div>
+
+          <!-- Meta info -->
+          <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+            <div>
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray-400);margin-bottom:2px;">Nomor Resi</div>
+              <div style="font-size:13px;font-weight:700;color:var(--gray-800);font-family:'Courier New',monospace;">${escapeHTML(tiket.resi)}</div>
+            </div>
+            <div>
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray-400);margin-bottom:2px;">Nama</div>
+              <div style="font-size:13px;font-weight:600;color:var(--gray-800);">${escapeHTML(tiket.nama)}</div>
+            </div>
+            <div>
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray-400);margin-bottom:2px;">Dibuat</div>
+              <div style="font-size:13px;font-weight:600;color:var(--gray-800);">${formatTanggal(tiket.tanggal)}</div>
+            </div>
+          </div>
+
+          <hr class="divider" style="border:none;border-top:1px solid var(--gray-100);margin:0 0 20px;">
+
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray-400);margin-bottom:16px;">Percakapan</div>
+          <div class="chat-container">
+            ${chatHTML}
+          </div>
+
+          <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--gray-100);display:flex;gap:10px;flex-wrap:wrap;">
+            <button onclick="cekTiket()" style="padding:10px 18px;background:var(--red);color:white;border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;">
+              🔄 Perbarui Status
+            </button>
+            <a href="index.html" style="padding:10px 18px;border:2px solid var(--gray-200);color:var(--gray-600);border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;">
+              + Buat Tiket Baru
+            </a>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function escapeHTML(str) {
+    if (!str) return '';
+    return str.toString()
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/\n/g, '<br>');
+  }
+</script>
+</body>
+</html>
