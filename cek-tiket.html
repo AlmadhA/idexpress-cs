@@ -501,7 +501,7 @@
 </footer>
 
 <script>
-  const GITHUB_TOKEN = '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';
+  const GITHUB_TOKEN = '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';
   const GITHUB_OWNER = 'AlmadhA';
   const GITHUB_REPO  = 'idexpress-cs-tickets';
 
@@ -606,7 +606,7 @@
   }
 
   async function ambilDariGitHub(kode) {
-    if (GITHUB_TOKEN === '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') return null;
+    if (GITHUB_TOKEN === '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') return null;
 
     const res = await fetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues?state=all&per_page=100`,
